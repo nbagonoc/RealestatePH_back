@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Agent\AgentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,9 +23,9 @@ Route::prefix('auth')->group(function () {
 });
 
 
-// admin routes
-Route::group(['middleware' => ['auth:api', 'admin'], 'prefix' => 'admin'], function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard']);
+// agent routes
+Route::group(['middleware' => ['auth:api', 'agent'], 'prefix' => 'agent'], function () {
+    Route::get('/dashboard', [AgentController::class, 'dashboard']);
 });
 
 
