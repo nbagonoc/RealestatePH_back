@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function profile()
+    public function dashboard()
     {
-        
+        return response()->json(['message' => 'Hello user!']);
     }
 }
