@@ -22,5 +22,4 @@ php artisan serve
 
 - PS:
     - Default role is user when you register
-    - Create DB seeder
     
