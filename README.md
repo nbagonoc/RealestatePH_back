@@ -1,4 +1,4 @@
-## RealestatePH using Laravel
+## RealestatePH
 
 RESTful backend API for RealestatePH using Laravel
 
