@@ -1,6 +1,6 @@
 ## Laravel10 JWT Auth
 
-A simple Laravel10 RESTful Backend Auth using JWT's
+A simple Laravel10 RESTful Backend Auth using JWT's with multiple user roles (user, admin)
 
 ## How to run locally:
 
