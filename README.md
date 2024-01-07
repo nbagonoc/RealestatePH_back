@@ -1,6 +1,6 @@
-## Laravel10 JWT Auth
+## RealestatePH using Laravel
 
-A simple Laravel10 RESTful Backend Auth using JWT's with multiple user roles (user, admin)
+RESTful backend API for RealestatePH using Laravel
 
 ## How to run locally:
 
@@ -19,7 +19,4 @@ php artisan db:seed
 ```
 php artisan serve
 ```
-
-- PS:
-    - Default role is user when you register
     
