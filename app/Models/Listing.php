@@ -28,4 +28,14 @@ class Listing extends Model
         'year_built',
         'parking',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(User::class);
+    }
 }
