@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Listing;
 
-use App\Http\Controllers\Controller;
+use App\Models\Listing;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ListingController extends Controller
 {
@@ -12,7 +13,12 @@ class ListingController extends Controller
      */
     public function index()
     {
-        //
+        $activeListings = Listing::where('status', 'active')->get();
+        $formattedListings = $activeListings->map(function ($listing) {
+            return collect($listing)->except(['description', 'updated_at'])->all();
+        });
+
+        return response()->json(['listings' => $formattedListings], 200);
     }
 
     /**
@@ -28,7 +34,12 @@ class ListingController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $listing = Listing::find($id);
+        if ($listing) {
+            return response()->json($listing->toArray(), 200);
+        } else {
+            return response()->json('Listing not found', 404);
+        }
     }
 
     /**
