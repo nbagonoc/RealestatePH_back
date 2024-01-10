@@ -14,7 +14,8 @@ class ListingsTableSeeder extends Seeder
     {
         Listing::create([
             'user_id' => 1,
-            'status' => 'active',
+            // 'status' => 'active',
+            'status_id' => 1,
             'description' => 'Beautiful 3-bedroom house with a spacious backyard',
             'price' => 250000.00,
             'address' => '123 Main St',
@@ -23,7 +24,8 @@ class ListingsTableSeeder extends Seeder
             'zip' => '12345',
             'photo' => 'house1.jpg',
             'category_id' => 1,
-            'type' => 'sale',
+            // 'type' => 'sale',
+            'type_id' => 1,
             'bedrooms' => 3,
             'bathrooms' => 2,
             'sqft' => 1800.00,
@@ -34,7 +36,8 @@ class ListingsTableSeeder extends Seeder
 
         Listing::create([
             'user_id' => 1,
-            'status' => 'active',
+            // 'status' => 'active',
+            'status_id' => 1,
             'description' => 'Modern condo with city views in a prime location',
             'price' => 150000.00,
             'address' => '456 Elm St',
@@ -43,7 +46,8 @@ class ListingsTableSeeder extends Seeder
             'zip' => '54321',
             'photo' => 'condo1.jpg',
             'category_id' => 2,
-            'type' => 'sale',
+            // 'type' => 'sale',
+            'type_id' => 1,
             'bedrooms' => 2,
             'bathrooms' => 1,
             'sqft' => 1000.00,

@@ -13,12 +13,16 @@ class ListingController extends Controller
      */
     public function index()
     {
-        $activeListings = Listing::where('status', 'active')->get();
+        $activeListings = Listing::where('status_id', 1)->get(); //active listings
 
         $formattedListings = $activeListings->map(function ($listing) {
             return collect($listing)->except(['description', 'updated_at'])
-            ->merge(['category' => $listing->category->name])
-            ->forget(['category_id']);
+            ->merge([
+                'category' => $listing->category->name,
+                'type' => $listing->type->name,
+                'status' => $listing->status->name,
+                ])
+            ->forget(['category_id', 'type_id', 'status_id']);
         });
 
         //check if formattedListings is empty
@@ -42,19 +46,10 @@ class ListingController extends Controller
      */
     public function show(string $id)
     {
-        // $listing = Listing::find($id);
-        $listing = Listing::with('category')->find($id);
+        $listing = Listing::with(['category', 'status', 'type'])->find($id);
 
         if ($listing) {
-            // return response()->json($listing->toArray(), 200);
-            
-            // $formattedListing = collect($listing)
-            //     ->merge(['category' => $listing->category->name])
-            //     ->forget(['category_id']);
-
-            $formattedListing = collect($listing)->forget(['category_id']);
-            $formattedListing['category'] = $listing->category;
-
+            $formattedListing = collect($listing)->forget(['category_id', 'type_id', 'status_id']);
             return response()->json($formattedListing, 200);
         } else {
             return response()->json(['message' => 'Listing not found'], 404);

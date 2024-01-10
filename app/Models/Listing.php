@@ -11,7 +11,7 @@ class Listing extends Model
 
     protected $fillable = [
         'user_id',
-        'status',
+        'status_id',
         'description',
         'price',
         'address',
@@ -20,7 +20,7 @@ class Listing extends Model
         'zip',
         'photo',
         'category_id',
-        'type',
+        'type_id',
         'bedrooms',
         'bathrooms',
         'sqft',
@@ -42,5 +42,15 @@ class Listing extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(Type::class);
     }
 }

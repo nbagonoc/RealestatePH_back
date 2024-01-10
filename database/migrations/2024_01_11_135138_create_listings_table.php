@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->enum('status', ['active', 'pending', 'closed'])->default('active');
+            // $table->enum('status', ['active', 'pending', 'closed'])->default('active');
+            $table->foreignId('status_id')->constrained()->default(1);
             $table->text('description');
             $table->float('price');
             $table->string('address');
@@ -25,8 +26,8 @@ return new class extends Migration
             $table->string('photo');
             // $table->enum('category', ['house', 'condo', 'townhouse', 'apartment', 'land', 'commercial'])->default('house');
             $table->foreignId('category_id')->constrained();
-            // $table->foreignId('category_id')->constrained()->default(1);
-            $table->enum('type', ['sale', 'rent'])->default('sale');
+            // $table->enum('type', ['sale', 'rent'])->default('sale');
+            $table->foreignId('type_id')->constrained()->default(1);
             $table->integer('bedrooms');
             $table->integer('bathrooms');
             $table->float('sqft');

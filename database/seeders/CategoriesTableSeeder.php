@@ -13,30 +13,6 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run(): void
     {
-        // Category::create([
-        //     'name' => 'house',
-        // ]);
-
-        // Category::create([
-        //     'name' => 'condo',
-        // ]);
-
-        // Category::create([
-        //     'name' => 'townhouse',
-        // ]);
-
-        // Category::create([
-        //     'name' => 'apartment',
-        // ]);
-
-        // Category::create([
-        //     'name' => 'land',
-        // ]);
-
-        // Category::create([
-        //     'name' => 'commercial',
-        // ]);
-
         $categories = [
             'house',
             'condo',
