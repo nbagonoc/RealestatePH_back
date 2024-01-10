@@ -19,4 +19,13 @@ php artisan db:seed
 ```
 php artisan serve
 ```
-    
+
+- Backlog:
+```
+view an agent (all)
+view a user (agent only)
+user profile edit (authenticated)
+manage(create, update, delete) review/rate an agent (authenticated)
+
+manage(create available booking timeslots, book timeslot, cancel booking timeslot) viewing (none MVP)
+```
