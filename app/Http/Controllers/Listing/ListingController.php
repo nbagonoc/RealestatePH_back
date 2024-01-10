@@ -42,13 +42,18 @@ class ListingController extends Controller
      */
     public function show(string $id)
     {
-        $listing = Listing::find($id);
+        // $listing = Listing::find($id);
+        $listing = Listing::with('category')->find($id);
 
         if ($listing) {
             // return response()->json($listing->toArray(), 200);
-            $formattedListing = collect($listing)
-                ->merge(['category' => $listing->category->name])
-                ->forget(['category_id']);
+            
+            // $formattedListing = collect($listing)
+            //     ->merge(['category' => $listing->category->name])
+            //     ->forget(['category_id']);
+
+            $formattedListing = collect($listing)->forget(['category_id']);
+            $formattedListing['category'] = $listing->category;
 
             return response()->json($formattedListing, 200);
         } else {
