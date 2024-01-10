@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Agent\AgentController;
+use App\Http\Controllers\Listing\ListingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +29,6 @@ Route::group(['middleware' => ['auth:api', 'agent'], 'prefix' => 'agent'], funct
     Route::get('/dashboard', [AgentController::class, 'dashboard']);
 });
 
-
 // authenicated routes
 Route::group(['middleware' => ['auth:api'], 'prefix' => 'user'], function () {
     Route::get('/dashboard', [UserController::class, 'dashboard']);
@@ -37,3 +37,19 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'user'], function () {
         return $request->user();
     });
 });
+
+// public listing routes
+Route::prefix('listings')->group(function () {
+    Route::get('/', [ListingController::class, 'index']);
+    Route::get('/{id}', [ListingController::class, 'show']);
+});
+
+// protected listing routes
+Route::group(['middleware' => ['auth:api', 'agent'], 'prefix' => 'listings'], function () {
+    Route::post('/', [ListingController::class, 'store']);
+    Route::put('/{id}', [ListingController::class, 'update']);
+    Route::patch('/{id}/update_field', [ListingController::class, 'updateField']);
+    Route::delete('/{id}', [ListingController::class, 'destroy']);
+});
+
+// Route::apiResource('listings', ListingController::class)->middleware('auth:api');
