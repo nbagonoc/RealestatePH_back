@@ -16,12 +16,14 @@ class ListingController extends Controller
         $activeListings = Listing::where('status', 'active')->get();
 
         $formattedListings = $activeListings->map(function ($listing) {
-            return collect($listing)->except(['description', 'updated_at'])->all();
+            return collect($listing)->except(['description', 'updated_at'])
+            ->merge(['category' => $listing->category->name])
+            ->forget(['category_id']);
         });
 
         //check if formattedListings is empty
         if (!$formattedListings->isEmpty()) {
-            return response()->json(['listings' => $formattedListings], 200);
+            return response()->json($formattedListings, 200);
         } else {
             return response()->json(['message' => 'No listings found'], 404);
         }
@@ -43,7 +45,12 @@ class ListingController extends Controller
         $listing = Listing::find($id);
 
         if ($listing) {
-            return response()->json($listing->toArray(), 200);
+            // return response()->json($listing->toArray(), 200);
+            $formattedListing = collect($listing)
+                ->merge(['category' => $listing->category->name])
+                ->forget(['category_id']);
+
+            return response()->json($formattedListing, 200);
         } else {
             return response()->json(['message' => 'Listing not found'], 404);
         }
