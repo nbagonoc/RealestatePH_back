@@ -19,7 +19,7 @@ class Listing extends Model
         'state',
         'zip',
         'photo',
-        'category',
+        'category_id',
         'type',
         'bedrooms',
         'bathrooms',
@@ -37,5 +37,10 @@ class Listing extends Model
     public function likes()
     {
         return $this->hasMany(User::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

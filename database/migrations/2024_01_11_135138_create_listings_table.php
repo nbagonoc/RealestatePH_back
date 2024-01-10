@@ -23,7 +23,9 @@ return new class extends Migration
             $table->string('state', 2);
             $table->string('zip', 5);
             $table->string('photo');
-            $table->enum('category', ['house', 'condo', 'townhouse', 'apartment', 'land', 'commercial'])->default('house');
+            // $table->enum('category', ['house', 'condo', 'townhouse', 'apartment', 'land', 'commercial'])->default('house');
+            $table->foreignId('category_id')->constrained();
+            // $table->foreignId('category_id')->constrained()->default(1);
             $table->enum('type', ['sale', 'rent'])->default('sale');
             $table->integer('bedrooms');
             $table->integer('bathrooms');

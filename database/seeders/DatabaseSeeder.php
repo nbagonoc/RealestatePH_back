@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use PgSql\Lob;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,7 +22,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UsersTableSeeder::class,
+            CategoriesTableSeeder::class,
             ListingsTableSeeder::class,
+            LikesTableSeeder::class,
         ]);
     }
 }
