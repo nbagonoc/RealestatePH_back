@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Like\LikeController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Agent\AgentController;
 use App\Http\Controllers\Listing\ListingController;
@@ -50,6 +51,13 @@ Route::group(['middleware' => ['auth:api', 'agent'], 'prefix' => 'listings'], fu
     Route::put('/{id}', [ListingController::class, 'update']);
     Route::patch('/{id}/update_field', [ListingController::class, 'updateField']);
     Route::delete('/{id}', [ListingController::class, 'destroy']);
+});
+
+// protected listing routes
+Route::group(['middleware' => ['auth:api'], 'prefix' => 'likes'], function () {
+    Route::post('/{id}', [LikeController::class, 'likeListing']);
+    Route::get('/', [LikeController::class, 'likedListings']);
+    Route::delete('/{id}', [LikeController::class, 'unlikeListing']);
 });
 
 // Route::apiResource('listings', ListingController::class)->middleware('auth:api');
