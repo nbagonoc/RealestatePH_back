@@ -29,7 +29,6 @@ Route::group(['middleware' => ['auth:api', 'agent'], 'prefix' => 'agent'], funct
     Route::get('/dashboard', [AgentController::class, 'dashboard']);
 });
 
-
 // authenicated routes
 Route::group(['middleware' => ['auth:api'], 'prefix' => 'user'], function () {
     Route::get('/dashboard', [UserController::class, 'dashboard']);
@@ -49,6 +48,7 @@ Route::prefix('listings')->group(function () {
 Route::group(['middleware' => ['auth:api', 'agent'], 'prefix' => 'listings'], function () {
     Route::post('/', [ListingController::class, 'store']);
     Route::put('/{id}', [ListingController::class, 'update']);
+    Route::patch('/{id}/update_field', [ListingController::class, 'updateField']);
     Route::delete('/{id}', [ListingController::class, 'destroy']);
 });
 

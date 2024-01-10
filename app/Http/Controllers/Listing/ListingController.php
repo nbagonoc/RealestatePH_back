@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Listing;
 use App\Models\Listing;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ListingRequest;
 
 class ListingController extends Controller
 {
@@ -36,29 +37,12 @@ class ListingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ListingRequest $request)
     {
-        $data = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'status_id' => 'nullable|exists:statuses,id',
-            'description' => 'required|string',
-            'price' => 'required|numeric',
-            'address' => 'required|string',
-            'city' => 'required|string',
-            'state' => 'required|string|size:2',
-            'zip' => 'required|string|size:5',
-            'photo' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
-            'type_id' => 'nullable|exists:types,id',
-            'bedrooms' => 'required|integer',
-            'bathrooms' => 'required|integer',
-            'sqft' => 'required|numeric',
-            'lot_size' => 'required|numeric',
-            'year_built' => 'required|integer',
-            'parking' => 'required|integer',
-        ]);
+        $data = $request->validated();
+        $data['user_id'] = auth()->id();
 
-        $listing = Listing::create($data);
+        Listing::create($data);
 
         return response()->json(['message' => 'Listing created'], 201);
     }
@@ -81,32 +65,15 @@ class ListingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Listing $listing)
+    public function update(ListingRequest $request, String $id)
     {
-        if (!$listing) {
+        $listing = Listing::find($id);
+
+        if (!$id) {
             return response()->json(['message' => 'Listing not found'], 404);
         }
 
-        $data = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'status_id' => 'nullable|exists:statuses,id',
-            'description' => 'required|string',
-            'price' => 'required|numeric',
-            'address' => 'required|string',
-            'city' => 'required|string',
-            'state' => 'required|string|size:2',
-            'zip' => 'required|string|size:5',
-            'photo' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
-            'type_id' => 'nullable|exists:types,id',
-            'bedrooms' => 'required|integer',
-            'bathrooms' => 'required|integer',
-            'sqft' => 'required|numeric',
-            'lot_size' => 'required|numeric',
-            'year_built' => 'required|integer',
-            'parking' => 'required|integer',
-        ]);
-    
+        $data = $request->validated();
 
         $listing->update($data);
 
@@ -127,5 +94,43 @@ class ListingController extends Controller
         $listing->delete();
 
         return response()->json(['message' => 'Listing deleted'], 200);
+    }
+
+    /**
+     * Patch specific fields(status, category and type) of a resource.
+     */
+    public function updateField(Request $request, String $id)
+    {
+        $listing = Listing::find($id);
+    
+        if (!$listing) {
+            return response()->json(['message' => 'Listing not found'], 404);
+        }
+    
+        $validations = [
+            'status_id' => 'exists:statuses,id',
+            'category_id' => 'exists:categories,id',
+            'type_id' => 'exists:types,id',
+        ];
+    
+        $field = $request->validate($validations);
+    
+        $fieldToUpdate = collect($field)->filter()->keys()->first();
+    
+        if (!$fieldToUpdate) {
+            return response()->json(['message' => 'At least one field is required'], 400);
+        }
+    
+        $listing->update($field);
+    
+        $fieldNames = [
+            'status_id' => 'status',
+            'category_id' => 'category',
+            'type_id' => 'type',
+        ];
+    
+        $fieldName = $fieldNames[$fieldToUpdate];
+    
+        return response()->json(['message' => "Listing $fieldName updated"], 200);
     }
 }
