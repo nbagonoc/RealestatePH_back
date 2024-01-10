@@ -38,7 +38,29 @@ class ListingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'status_id' => 'nullable|exists:statuses,id',
+            'description' => 'required|string',
+            'price' => 'required|numeric',
+            'address' => 'required|string',
+            'city' => 'required|string',
+            'state' => 'required|string|size:2',
+            'zip' => 'required|string|size:5',
+            'photo' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'type_id' => 'nullable|exists:types,id',
+            'bedrooms' => 'required|integer',
+            'bathrooms' => 'required|integer',
+            'sqft' => 'required|numeric',
+            'lot_size' => 'required|numeric',
+            'year_built' => 'required|integer',
+            'parking' => 'required|integer',
+        ]);
+
+        $listing = Listing::create($data);
+
+        return response()->json(['message' => 'Listing created'], 201);
     }
 
     /**
@@ -66,7 +88,8 @@ class ListingController extends Controller
         }
 
         $data = $request->validate([
-            'status' => 'required|string|in:active,pending,closed',
+            'user_id' => 'required|exists:users,id',
+            'status_id' => 'nullable|exists:statuses,id',
             'description' => 'required|string',
             'price' => 'required|numeric',
             'address' => 'required|string',
@@ -74,8 +97,8 @@ class ListingController extends Controller
             'state' => 'required|string|size:2',
             'zip' => 'required|string|size:5',
             'photo' => 'required|string',
-            'category' => 'required|string|in:house,condo,townhouse,apartment,land,commercial',
-            'type' => 'required|string|in:sale,rent',
+            'category_id' => 'required|exists:categories,id',
+            'type_id' => 'nullable|exists:types,id',
             'bedrooms' => 'required|integer',
             'bathrooms' => 'required|integer',
             'sqft' => 'required|numeric',
@@ -83,6 +106,7 @@ class ListingController extends Controller
             'year_built' => 'required|integer',
             'parking' => 'required|integer',
         ]);
+    
 
         $listing->update($data);
 
