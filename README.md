@@ -22,9 +22,9 @@ php artisan serve
 
 - Backlog:
 ```
-view an agent (all)
-view a user (agent only)
-user profile edit (authenticated)
+manage profile (authenticated)
+view an agent profile (all)
+view a user profile (agent only)
 manage(create, update, delete) review/rate an agent (authenticated)
 
 manage(create available booking timeslots, book timeslot, cancel booking timeslot) viewing (none MVP)

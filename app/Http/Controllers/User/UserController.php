@@ -19,4 +19,15 @@ class UserController extends Controller
         ? response()->json($agent, 200)
         : response()->json(['error' => 'Agent not found'], 404);
     }
+
+    public function getUser($id)
+    {
+        $user = User::where(['id' => $id])
+            ->select('id', 'name', 'email')
+            ->first();
+
+        return $user
+        ? response()->json($user, 200)
+        : response()->json(['error' => 'User not found'], 404);
+    }
 }
