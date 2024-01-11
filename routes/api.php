@@ -29,12 +29,12 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'users'], function () {
     Route::get('/profile', function (Request $request) {
         return $request->user();
     });
-    Route::get('/{id}/agent', [UserController::class, 'getAgent']);
+    Route::get('/{id}/agent', [UserController::class, 'getAgentProfile']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 // authenicated routes | agent only
 Route::group(['middleware' => ['auth:api', 'agent'], 'prefix' => 'users'], function () {
-    Route::get('/{id}/user', [UserController::class, 'getUser']);
+    Route::get('/{id}/user', [UserController::class, 'getUserProfile']);
 });
 
 // LISTINGS ROUTES
