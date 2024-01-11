@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Like\LikeController;
 use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\Agent\AgentController;
 use App\Http\Controllers\Listing\ListingController;
 
 /*
@@ -24,11 +23,6 @@ Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'signin']);
 });
 
-// agent routes
-// Route::group(['middleware' => ['auth:api', 'agent'], 'prefix' => 'agent'], function () {
-//     Route::get('/dashboard', [AgentController::class, 'dashboard']);
-// });
-
 // USER ROUTES
 // authenicated routes
 Route::group(['middleware' => ['auth:api'], 'prefix' => 'users'], function () {
@@ -38,10 +32,10 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'users'], function () {
     Route::get('/{id}/agent', [UserController::class, 'getAgent']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
-// authenicated routes
-// Route::group(['middleware' => ['auth:api', 'agent'], 'prefix' => 'agent'], function () {
-//     Route::get('/{id}/user', [UserController::class, 'getAgent']);
-// });
+// authenicated routes | agent only
+Route::group(['middleware' => ['auth:api', 'agent'], 'prefix' => 'users'], function () {
+    Route::get('/{id}/user', [UserController::class, 'getUser']);
+});
 
 // LISTINGS ROUTES
 // public listing routes
@@ -49,7 +43,7 @@ Route::prefix('listings')->group(function () {
     Route::get('/', [ListingController::class, 'index']);
     Route::get('/{id}', [ListingController::class, 'show']);
 });
-// protected listing routes
+// authenticated listing routes | agent only
 Route::group(['middleware' => ['auth:api', 'agent'], 'prefix' => 'listings'], function () {
     Route::post('/', [ListingController::class, 'store']);
     Route::put('/{id}', [ListingController::class, 'update']);
