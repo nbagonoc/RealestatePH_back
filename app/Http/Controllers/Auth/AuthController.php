@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Models\Profile;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
@@ -13,22 +14,27 @@ class AuthController extends Controller
 {
     public function signup(Request $request)
     {
-        // data validation
         $request->validate([
             "name" => "required",
             "email" => "required|email|unique:users",
             "password" => "required|confirmed"
         ]);
 
-        // create user
         User::create([
             "name" => $request->name,
             "email" => $request->email,
             "password" => Hash::make($request->password)
         ]);
 
-        // return response()->json(['message' => 'User created successfully'], 201);
-        return response()->json('User created successfully', 201);
+        $user_id = User::select('id')->where('email', $request->email)->first();
+
+        if ($user_id) {
+            Profile::create(['user_id' => $user_id->id]);
+
+            return response()->json('successfully signed-up', 201);
+        }
+
+        return response()->json('Failed to sign-up', 500);
     }
 
     public function signin(Request $request)
@@ -67,6 +73,5 @@ class AuthController extends Controller
 
     public function logout()
     {
-
     }
 }
