@@ -14,7 +14,9 @@ class ListingController extends Controller
      */
     public function index()
     {
-        $activeListings = Listing::where('status_id', 1)->get(); //active listings
+        $activeListings = Listing::where('status_id', 1)
+            ->with('likedByUsers')
+            ->get(); //active listings
 
         $formattedListings = $activeListings->map(function ($listing) {
             return collect($listing)->except(['description', 'updated_at'])
@@ -22,11 +24,11 @@ class ListingController extends Controller
                 'category' => $listing->category->name,
                 'type' => $listing->type->name,
                 'status' => $listing->status->name,
+                'liked_by_users' => $listing->likedByUsers->pluck('id'), // Extract only 'id' from liked_by_users
                 ])
             ->forget(['category_id', 'type_id', 'status_id']);
         });
 
-        //check if formattedListings is empty
         if (!$formattedListings->isEmpty()) {
             return response()->json($formattedListings, 200);
         } else {
@@ -52,10 +54,13 @@ class ListingController extends Controller
      */
     public function show(string $id)
     {
-        $listing = Listing::with(['category', 'status', 'type'])->find($id);
+        $listing = Listing::with(['category', 'status', 'type', 'likedByUsers'])->find($id);
 
         if ($listing) {
-            $formattedListing = collect($listing)->forget(['category_id', 'type_id', 'status_id']);
+            $formattedListing = collect($listing)
+                ->merge(['liked_by_users' => $listing->likedByUsers->pluck('id')])// Extract only 'id' from liked_by_users
+                ->forget(['category_id', 'type_id', 'status_id']);
+    
             return response()->json($formattedListing, 200);
         } else {
             return response()->json(['message' => 'Listing not found'], 404);
