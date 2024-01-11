@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             StatusesTableSeeder::class,
             ListingsTableSeeder::class,
             LikesTableSeeder::class,
+            ProfileTableSeeder::class,
         ]);
     }
 }
