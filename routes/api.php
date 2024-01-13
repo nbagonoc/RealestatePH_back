@@ -30,6 +30,7 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'users'], function () {
         return $request->user();
     });
     Route::get('/{id}/agent', [UserController::class, 'getAgentProfile']);
+    Route::put('/{id}/agent', [UserController::class, 'updateProfile']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 // authenicated routes | agent only
