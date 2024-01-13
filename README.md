@@ -22,7 +22,6 @@ php artisan serve
 
 - Backlog:
 ```
-manage(update) profile (authenticated)
 manage(create, update, delete) review/rate an agent (authenticated)
 
 manage(create available booking timeslots, book timeslot, cancel booking timeslot) viewing (none MVP)

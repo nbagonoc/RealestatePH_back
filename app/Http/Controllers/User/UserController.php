@@ -5,18 +5,17 @@ namespace App\Http\Controllers\User;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Profile;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     public function getAgentProfile($id)
     {
-        // $agent = User::find($id)::where('role', 'agent')->first();
-        $agent = User::where(['id' => $id, 'role' => 'agent'])
-            ->with('profile')
-            ->select('id', 'email')
-            ->first();
-        $agent->profile->makeHidden(['id', 'user_id']);
+        $agent = User::join('profiles', 'users.id', '=', 'profiles.user_id')
+        ->where(['users.id' => $id, 'users.role' => 'agent'])
+        ->select('users.email', 'profiles.*')
+        ->first();
 
         return $agent
         ? response()->json($agent, 200)
@@ -25,11 +24,10 @@ class UserController extends Controller
 
     public function getUserProfile($id)
     {
-        $user = User::where(['id' => $id])
-            ->with('profile')
-            ->select('id', 'email')
-            ->first();
-        $user->profile->makeHidden(['id', 'user_id']);
+        $user = User::join('profiles', 'users.id', '=', 'profiles.user_id')
+        ->where(['users.id' => $id])
+        ->select('users.email', 'profiles.*')
+        ->first();
 
         return $user
         ? response()->json($user, 200)
@@ -38,13 +36,23 @@ class UserController extends Controller
 
     public function updateProfile(Request $request)
     {
-        //name should be moved to profile table :(
-        $user = Auth::user()->id;
-        if ($user) {
-            $user->profile->update($request->all());
-            return response()->json($user, 200);
-        } else {
-            return response()->json(['error' => 'User not found'], 404);
+        $user_id = Auth::user()->id;
+        $profile = Profile::find($user_id);
+
+        if (!$user_id || !$profile) {
+            return response()->json(['message' => 'User/Profile not found'], 404);
         }
+
+        $data = $request->validate([
+            'first_name' => 'required|string|max:50',
+            'last_name' => 'required|string|max:50',
+            'phone' => 'required|string|max:25',
+            'about' => 'string|max:500',
+            'photo' => 'string|max:255',
+        ]);
+
+        $profile->update($data);
+
+        return response()->json(['message' => 'Profile updated'], 200);
     }
 }
