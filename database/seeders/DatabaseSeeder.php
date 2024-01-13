@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             ListingsTableSeeder::class,
             LikesTableSeeder::class,
             ProfileTableSeeder::class,
+            ReviewsTableSeeder::class
         ]);
     }
 }
