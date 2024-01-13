@@ -23,6 +23,9 @@ class ReviewController extends Controller
         if (Review::where('user_id', $user_id)->where('profile_id', $profile_id)->exists()) {
             return response()->json(['message' => 'You have already reviewed this profile'], 400);
         }
+        if (auth()->user()->role == "user" && $profile->user->role == "user") {
+            return response()->json(['message' => 'You cannot review this profile'], 400);
+        }
 
         $data = $request->validate([
             'rate' => 'required|numeric|min:1|max:5',
@@ -54,7 +57,38 @@ class ReviewController extends Controller
             : response()->json(['message' => 'No reviews found'], 404);
     }
 
-    //edit review
+    public function updateReview(Request $request, $id)
+    {
+        $review = Review::find($id);
 
-    //delete review
+        if (!$review) {
+            return response()->json(['message' => 'Review not found'], 404);
+        }
+
+        $data = $request->validate([
+            'rate' => 'required|numeric|min:1|max:5',
+            'review' => 'required|string|max:255',
+        ]);
+
+        $review->update($data);
+
+        return response()->json([
+            'message' => 'Your review has been updated!',
+        ]);
+    }
+
+    public function destroyReview($id)
+    {
+        $review = Review::find($id);
+
+        if (!$review) {
+            return response()->json(['message' => 'Review not found'], 404);
+        }
+
+        $review->delete();
+
+        return response()->json([
+            'message' => 'Your review has been deleted!',
+        ]);
+    }
 }

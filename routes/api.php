@@ -18,6 +18,7 @@ use App\Http\Controllers\Listing\ListingController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+// AUTH ROUTES
 // public auth routes
 Route::prefix('auth')->group(function () {
     Route::post('/signup', [AuthController::class, 'signup']);
@@ -72,7 +73,7 @@ Route::prefix('reviews')->group(function () {
 // authenicated review routes
 Route::group(['middleware' => ['auth:api'], 'prefix' => 'reviews'], function () {
     Route::post('/{profile_id}', [ReviewController::class, 'storeReview']);
-    // Route::put('/{id}/list', [ReviewController::class, 'updateReviews']);
-    // Route::delete('/{id}/list', [ReviewController::class, 'deleteReviews']);
+    Route::put('/{id}', [ReviewController::class, 'updateReview']);
+    Route::delete('/{id}', [ReviewController::class, 'destroyReview']);
 });
 
