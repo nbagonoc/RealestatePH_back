@@ -73,4 +73,9 @@ class User extends Authenticatable implements JWTSubject
     {
       return $this->hasOne(Profile::class);
     }
+
+    public function reviews()
+    {
+      return $this->hasMany(Review::class);
+    }
 }

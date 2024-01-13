@@ -5,17 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Profile extends Model
+class Review extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
-        'first_name',
-        'last_name',
-        'phone',
-        'about',
-        'photo'
+        'profile_id',
+        'rate',
+        'review'
     ];
 
     public $timestamps = false;
@@ -25,8 +23,8 @@ class Profile extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function reviews()
+    public function profile()
     {
-        return $this->hasMany(Review::class);
+        return $this->belongsTo(Profile::class);
     }
 }

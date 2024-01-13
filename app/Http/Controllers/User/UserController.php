@@ -39,8 +39,8 @@ class UserController extends Controller
         $user_id = Auth::user()->id;
         $profile = Profile::find($user_id);
 
-        if (!$user_id || !$profile) {
-            return response()->json(['message' => 'User/Profile not found'], 404);
+        if (!$profile) {
+            return response()->json(['message' => 'Profile not found'], 404);
         }
 
         $data = $request->validate([
