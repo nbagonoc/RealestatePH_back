@@ -11,7 +11,9 @@ class Review extends Model
 
     protected $fillable = [
         'user_id',
-        'profile_id'
+        'profile_id',
+        'rate',
+        'review'
     ];
 
     public $timestamps = false;

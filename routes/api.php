@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Like\LikeController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\Review\ReviewController;
 use App\Http\Controllers\Listing\ListingController;
 
 /*
@@ -60,3 +61,18 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'likes'], function () {
     Route::get('/', [LikeController::class, 'likedListings']);
     Route::delete('/{id}', [LikeController::class, 'unlikeListing']);
 });
+
+//REVIEWS ROUTES
+// public review routes
+Route::prefix('reviews')->group(function () {
+    Route::get('/{id}', [ReviewController::class, 'viewReview']);
+    Route::get('/{profile_id}/list', [ReviewController::class, 'listReviews']);
+    
+});
+// authenicated review routes
+Route::group(['middleware' => ['auth:api'], 'prefix' => 'reviews'], function () {
+    Route::post('/{profile_id}', [ReviewController::class, 'storeReview']);
+    // Route::put('/{id}/list', [ReviewController::class, 'updateReviews']);
+    // Route::delete('/{id}/list', [ReviewController::class, 'deleteReviews']);
+});
+
