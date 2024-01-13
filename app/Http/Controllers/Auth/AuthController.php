@@ -15,13 +15,11 @@ class AuthController extends Controller
     public function signup(Request $request)
     {
         $request->validate([
-            "name" => "required",
             "email" => "required|email|unique:users",
             "password" => "required|confirmed"
         ]);
 
         User::create([
-            "name" => $request->name,
             "email" => $request->email,
             "password" => Hash::make($request->password)
         ]);
@@ -60,7 +58,6 @@ class AuthController extends Controller
         $customClaims = [
             'iat' => now()->timestamp,
             'exp' => now()->addHours(24)->timestamp,
-            'name' => $user->name,
             'email' => $user->email,
             'role' => $user->role
         ];
