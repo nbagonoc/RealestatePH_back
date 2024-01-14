@@ -21,5 +21,7 @@ php artisan serve
 ```
 
 - Backlog:
--- MVP(Minimum viable product) DONE!
--- Feat to be added in the future: manage(create available booking timeslots, book timeslot, cancel booking timeslot) viewing (none MVP)
+    - MVP(Minimum viable product):
+        - DONE!
+    - Feat to be added in the future(if I have the time, that is...):
+        - Manage(create available booking timeslots, book timeslot, cancel booking timeslot) viewing (none MVP)
