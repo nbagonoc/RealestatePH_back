@@ -29,7 +29,7 @@ class ListingRequest extends FormRequest
             'city' => 'required|string',
             'state' => 'required|string|size:2',
             'zip' => 'required|string|size:5',
-            'photo' => 'required|string',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'category_id' => 'required|exists:categories,id',
             'type_id' => 'nullable|exists:types,id',
             'bedrooms' => 'required|integer',

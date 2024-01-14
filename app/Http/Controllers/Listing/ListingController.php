@@ -6,6 +6,7 @@ use App\Models\Listing;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ListingRequest;
+use Illuminate\Support\Facades\Storage;
 
 class ListingController extends Controller
 {
@@ -44,6 +45,12 @@ class ListingController extends Controller
         $data = $request->validated();
         $data['user_id'] = auth()->id();
 
+        //store image in s3
+        if ($request->hasFile('photo')) {
+            $url = $this->uploadPhoto($request->file('photo'));
+            $data['photo'] = $url; //use the url to store in the database
+        }
+
         Listing::create($data);
 
         return response()->json(['message' => 'Listing created'], 201);
@@ -79,6 +86,12 @@ class ListingController extends Controller
         }
 
         $data = $request->validated();
+
+        //store image in s3
+        if ($request->hasFile('photo')) {
+            $url = $this->uploadPhoto($request->file('photo'));
+            $data['photo'] = $url; //use the url to store in the database
+        }
 
         $listing->update($data);
 
@@ -137,5 +150,16 @@ class ListingController extends Controller
         $fieldName = $fieldNames[$fieldToUpdate];
     
         return response()->json(['message' => "Listing $fieldName updated"], 200);
+    }
+
+    /**
+     * Upload photo to AWS s3.
+     */
+    public function uploadPhoto($photo)
+    {
+        $path = $photo->store('listings', 's3'); //store the file in assigned directory(listings) in s3 storage method
+        $url = Storage::cloud('s3')->url($path); //get the url of the file
+
+        return $url;
     }
 }

@@ -50,9 +50,10 @@ class UserController extends Controller
             'last_name' => 'required|string|max:50',
             'phone' => 'string|max:25',
             'about' => 'string|max:500',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
+        //store image in s3
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
             $path = $file->store('profiles', 's3'); //store the file in profiles directory in s3 storage method
