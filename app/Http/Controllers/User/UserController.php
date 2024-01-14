@@ -57,6 +57,7 @@ class UserController extends Controller
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
             $path = $file->store('profiles', 's3'); //store the file in profiles directory in s3 storage method
+            Storage::cloud('s3')->setVisibility($path, 'public'); //make the file public
             $url = Storage::cloud('s3')->url($path); //get the url of the file
             $data['photo'] = $url; //use the url to store in the database
         }

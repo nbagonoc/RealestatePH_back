@@ -158,6 +158,7 @@ class ListingController extends Controller
     public function uploadPhoto($photo)
     {
         $path = $photo->store('listings', 's3'); //store the file in assigned directory(listings) in s3 storage method
+        Storage::cloud('s3')->setVisibility($path, 'public'); //make the file public
         $url = Storage::cloud('s3')->url($path); //get the url of the file
 
         return $url;
