@@ -22,7 +22,7 @@ php artisan serve
 
 - Backlog:
 ```
-manage(create, update, delete) review/rate an agent (authenticated)
+Uploaded images should be sotred in S3
 
 manage(create available booking timeslots, book timeslot, cancel booking timeslot) viewing (none MVP)
 ```
