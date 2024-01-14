@@ -22,7 +22,7 @@ php artisan serve
 
 - Backlog:
 ```
-Uploaded images should be sotred in S3
+make /users/profile include profile attributes as well and not just user model attibutes.
 
 manage(create available booking timeslots, book timeslot, cancel booking timeslot) viewing (none MVP)
 ```

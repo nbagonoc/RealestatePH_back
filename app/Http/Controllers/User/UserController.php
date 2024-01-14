@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Profile;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
+//Should rename this to UserProfileController since it's both utilizing the User and Profile models
 class UserController extends Controller
 {
     public function getAgentProfile($id)
@@ -46,10 +48,19 @@ class UserController extends Controller
         $data = $request->validate([
             'first_name' => 'required|string|max:50',
             'last_name' => 'required|string|max:50',
-            'phone' => 'required|string|max:25',
+            'phone' => 'string|max:25',
             'about' => 'string|max:500',
-            'photo' => 'string|max:255',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
+
+        //store image in s3
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $path = $file->store('profiles', 's3'); //store the file in profiles directory in s3 storage method
+            Storage::cloud('s3')->setVisibility($path, 'public'); //make the file public
+            $url = Storage::cloud('s3')->url($path); //get the url of the file
+            $data['photo'] = $url; //use the url to store in the database
+        }
 
         $profile->update($data);
 
