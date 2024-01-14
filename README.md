@@ -9,7 +9,7 @@ RESTful backend API for RealestatePH using Laravel
 composer install
 cp .env.example .env
 php artisan key:generate
-setup your database in the .env file
+setup database and AWS S3 configs in the .env file
 php artisan migrate
 php artisan jwt:secret
 php artisan db:seed
