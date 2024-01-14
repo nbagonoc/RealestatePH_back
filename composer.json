@@ -1,5 +1,5 @@
 {
-    "name": "RealestatePH_back",
+    "name": "nicbag/realestate_ph_backend",
     "type": "project",
     "description": "RESTful backend API for RealestatePH using Laravel",
     "keywords": ["laravel", "framework"],
@@ -10,6 +10,7 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
+        "league/flysystem-aws-s3-v3": "^3.22",
         "tymon/jwt-auth": "^2.0"
     },
     "require-dev": {
