@@ -21,8 +21,5 @@ php artisan serve
 ```
 
 - Backlog:
-```
-make /users/profile include profile attributes as well and not just user model attibutes.
-
-manage(create available booking timeslots, book timeslot, cancel booking timeslot) viewing (none MVP)
-```
+-- MVP(Minimum viable product) DONE!
+-- Feat to be added in the future: manage(create available booking timeslots, book timeslot, cancel booking timeslot) viewing (none MVP)

@@ -12,12 +12,27 @@ use Illuminate\Support\Facades\Storage;
 //Should rename this to UserProfileController since it's both utilizing the User and Profile models
 class UserController extends Controller
 {
+    public function profile()
+    {
+        $user_id = Auth::user()->id;
+        $user = User::join('profiles', 'users.id', '=', 'profiles.user_id')
+        ->where(['users.id' => $user_id])
+        ->select('users.id', 'users.email', 'profiles.*')
+        ->first()
+        ->makeHidden('user_id');
+
+        return $user
+        ? response()->json($user, 200)
+        : response()->json(['error' => 'User not found'], 404);
+    }
+
     public function getAgentProfile($id)
     {
         $agent = User::join('profiles', 'users.id', '=', 'profiles.user_id')
         ->where(['users.id' => $id, 'users.role' => 'agent'])
-        ->select('users.email', 'profiles.*')
-        ->first();
+        ->select('users.*', 'profiles.*')
+        ->first()
+        ->makeHidden('user_id','email_verified_at');
 
         return $agent
         ? response()->json($agent, 200)
@@ -28,8 +43,9 @@ class UserController extends Controller
     {
         $user = User::join('profiles', 'users.id', '=', 'profiles.user_id')
         ->where(['users.id' => $id])
-        ->select('users.email', 'profiles.*')
-        ->first();
+        ->select('users.*', 'profiles.*')
+        ->first()
+        ->makeHidden('user_id','email_verified_at');
 
         return $user
         ? response()->json($user, 200)
