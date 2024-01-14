@@ -31,9 +31,10 @@ Route::get('users/{id}/agent', [UserController::class, 'getAgentProfile']);
 // authenicated routes
 Route::group(['middleware' => ['auth:api'], 'prefix' => 'users'], function () {
     Route::put('/', [UserController::class, 'updateProfile']);
-    Route::get('/profile', function (Request $request) {
+    Route::get('/', function (Request $request) {
         return $request->user();
     });
+    Route::get('/profile', [UserController::class, 'profile']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 // authenicated routes | agent only
